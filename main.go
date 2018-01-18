@@ -3,13 +3,16 @@ package main
 import (
 	"fmt"
 	"github.com/urfave/cli"
+	"log"
 	"os"
 )
 
-type Configuration struct {
-}
-
 func main() {
+	conf, err := LoadConfiguration()
+	if err != nil {
+		log.Fatalf("Unable to load .vitarc, please check that file exists and is correct.")
+	}
+
 	app := cli.NewApp()
 	app.Name = "vita"
 	app.Usage = "Here's how you use vita"
@@ -23,8 +26,7 @@ func main() {
 			Name:  "notebooks",
 			Usage: "list all notebooks",
 			Action: func(c *cli.Context) error {
-				fmt.Println("Listing all existing notebooks: ")
-				getNotebooks("/Users/philiphouse/os/go/src/github.com/phouse512/vita")
+				GetNotebooks(conf.VitaDir)
 				return nil
 			},
 		},

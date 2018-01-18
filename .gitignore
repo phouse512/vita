@@ -1,3 +1,4 @@
 # ignore local vita build
 vita 
 
+*.swp
