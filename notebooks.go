@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"time"
 )
 
 type Notebook struct {
@@ -48,4 +49,17 @@ func GetNotebooks(vitaDir string) {
 	}
 
 	log.Printf("Found %d notebooks", len(nbs))
+}
+
+func GetTodayFile(vitaDir string, nbName string) {
+	// get today's date
+	t := time.Now()
+	todayPath := fmt.Sprintf("%02d-%02d-%d.md\n", t.Month(), t.Day(), t.Year())
+	fullPath := fmt.Sprintf("%s/%s/%s", vitaDir, nbName, todayPath)
+
+	// check if file exists
+
+	// if exists return filepath
+
+	// if doesn't exist, create file with template, then return
 }

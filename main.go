@@ -5,6 +5,7 @@ import (
 	"github.com/urfave/cli"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -35,9 +36,11 @@ func main() {
 			Aliases: []string{},
 			Usage:   "Get the filepath of today's notebook entry.",
 			Action: func(c *cli.Context) error {
-				fmt.Println("Here we go")
+				fmt.Printf("Loading default notebook, %s\n", conf.DefaultNotebook)
 				// get default notebook
 				// generate today's date, check if file exists or not
+				t := time.Now()
+				fmt.Printf("%02d-%02d-%d.md\n", t.Month(), t.Day(), t.Year())
 				return nil
 			},
 		},
