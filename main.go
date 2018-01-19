@@ -30,6 +30,17 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name:    "today",
+			Aliases: []string{},
+			Usage:   "Get the filepath of today's notebook entry.",
+			Action: func(c *cli.Context) error {
+				fmt.Println("Here we go")
+				// get default notebook
+				// generate today's date, check if file exists or not
+				return nil
+			},
+		},
 	}
 	app.Run(os.Args)
 }
