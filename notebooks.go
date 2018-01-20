@@ -4,14 +4,30 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
+	"os"
 	"time"
 )
 
 type Notebook struct {
 	Name      string `json:"name"`
 	CreatedAt int    `json:"createdAt"`
+}
+
+type Entry struct {
+	Name     string
+	Date     time.Time
+	Notebook string
+}
+
+func (e Entry) GetEntryName() string {
+	return fmt.Sprintf("%02d-%02d-%02d", e.Date.Month(), e.Date.Day(), e.Date.Year())
+}
+
+func (e Entry) GetFilePath(vitaDir string) string {
+	return fmt.Sprintf("%s/%s/%s.txt", vitaDir, e.Notebook, e.GetEntryName())
 }
 
 func loadNotebook(path string) (Notebook, error) {
@@ -51,15 +67,34 @@ func GetNotebooks(vitaDir string) {
 	log.Printf("Found %d notebooks", len(nbs))
 }
 
-func GetTodayFile(vitaDir string, nbName string) {
+func GetTodayFile(vitaDir string, nbName string) string {
 	// get today's date
 	t := time.Now()
-	todayPath := fmt.Sprintf("%02d-%02d-%d.md\n", t.Month(), t.Day(), t.Year())
-	fullPath := fmt.Sprintf("%s/%s/%s", vitaDir, nbName, todayPath)
+
+	entry := Entry{"default", t, nbName}
+
+	fullPath := entry.GetFilePath(vitaDir)
 
 	// check if file exists
-
-	// if exists return filepath
+	if _, err := os.Stat(fullPath); err == nil {
+		// if exists return filepath
+		return fullPath
+	}
 
 	// if doesn't exist, create file with template, then return
+	temp := template.Must(template.New("entry.tmpl").ParseFiles("entry.tmpl"))
+
+	f, err := os.Create(fullPath)
+	if err != nil {
+		os.Exit(1)
+		return ""
+	}
+
+	err = temp.Execute(f, entry)
+	if err != nil {
+		os.Exit(1)
+	}
+
+	f.Close()
+	return fullPath
 }
