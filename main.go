@@ -23,12 +23,13 @@ func main() {
 
 	app.Commands = []cli.Command{
 		{
-			Name:  "notebooks",
+			Name:  "notebook",
 			Usage: "list all notebooks",
 			Action: func(c *cli.Context) error {
 				GetNotebooks(conf.VitaDir)
 				return nil
 			},
+			Subcommands: []cli.Command{},
 		},
 		{
 			Name:    "today",
@@ -37,6 +38,10 @@ func main() {
 			Action: func(c *cli.Context) error {
 				// get default notebook
 				// generate today's date, check if file exists or not
+				if len(c.Args().First()) > 0 {
+					fmt.Printf("%s\n", GetTodayFile(conf.VitaDir, c.Args().First()))
+					return nil
+				}
 				fmt.Printf("%s\n", GetTodayFile(conf.VitaDir, conf.DefaultNotebook))
 				return nil
 			},

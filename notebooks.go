@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/fatih/color"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -86,8 +87,8 @@ func GetTodayFile(vitaDir string, nbName string) string {
 
 	f, err := os.Create(fullPath)
 	if err != nil {
+		color.Red("No notebook found with name: %s\n", nbName)
 		os.Exit(1)
-		return ""
 	}
 
 	err = temp.Execute(f, entry)
