@@ -23,7 +23,7 @@ func main() {
 
 	app.Commands = []cli.Command{
 		{
-			Name:  "notebook",
+			Name:  "notebooks",
 			Usage: "list all notebooks",
 			Action: func(c *cli.Context) error {
 				GetNotebooks(conf.VitaDir)
