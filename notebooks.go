@@ -83,7 +83,12 @@ func GetTodayFile(vitaDir string, nbName string) string {
 	}
 
 	// if doesn't exist, create file with template, then return
-	temp := template.Must(template.New("entry.tmpl").ParseFiles("entry.tmpl"))
+	data, err := Asset("data/entry.tmpl")
+	if err != nil {
+		color.Red("Unable to load entry.tmpl bindata file: %s\n", err)
+		os.Exit(1)
+	}
+	temp := template.Must(template.New("entry.tmpl").Parse(string(data)))
 
 	f, err := os.Create(fullPath)
 	if err != nil {

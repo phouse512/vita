@@ -43,3 +43,13 @@ $ vita notebooks
 - a markdown renderer/blog - vita only works with text files and keeps track of
     them for you. Hook it up to a static site renderer if you want more.
 
+
+#### development
+
+vita uses [go-bindata][https://github.com/kevinburke/go-bindata] as a tool to
+package its template files so that a single binary can be built and transported
+with 0 dependencies.
+
+If you add/modify templates, make sure they are in the `data/` directory, and
+run `go-bindata data/...` to convert it to a go file that can be built. See its
+README for more advanced usage.
